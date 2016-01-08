@@ -10,7 +10,7 @@ echo '['
 echo '[],'
 
 # Now send blocks with information forever:
-conky -d -c $HOME/.i3/.conkyrc
+conky -d -c $HOME/.i3/conky.conf
 
 
 IFS="}"
