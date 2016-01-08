@@ -1,0 +1,51 @@
+WIN+*
+	[0...9] - empty
+	a - browser "A firefox"
+	e - "Emacs"
+	i - "Info"
+	m - "Mail"
+	q - "Q chats"
+	s - "S fm"
+	t - "Torrents"
+	z,x,c - empty
+	---
+	arrows & HJKL - move focus
+	d - dmenu
+	enter - terminal
+	f - toogle fullscren
+	g - horizontal separation
+	space - toogle between floating and tiling windows
+	v - vertical separation
+
+WIN+SHIFT+*
+	move window to --//--
+	arrows & HJKL - move window
+	space - toggle tiling / floating
+
+WIN+ALT+*
+	D - fm
+	E - emacs
+	F - firefox
+	G - gimp
+	I - inkscape
+	L - i3lock
+	Q - kill
+	S - shotwell
+	T - golden dict
+	W - writer
+	enter/X - terminal
+
+WIN+CTRL+*
+	A - tabbed
+	D - toogle split
+	E - exit i3
+	H - halt
+	Q - kill app
+	R - restart i3
+	S - stacked
+	T - reload config
+
+
+Shift+Print - screenshot selection
+Shift+Ctrl+Print - screenshot fullscreen
+Shift+Alt+Print - screenshot menu
