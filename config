@@ -171,6 +171,9 @@ workspace "Info" output VGA1
 workspace "Mail" output eDP1
 workspace "S fm" output eDP1
 workspace "Torrents" output VGA1
+workspace "Z" output VGA1
+workspace "X" output eDP1
+workspace "C" output HDMI1
 
 
 
