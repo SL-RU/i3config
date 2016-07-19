@@ -162,7 +162,7 @@ exec --no-startup-id i3-msg 'workspace "Emacs"; exec emacs;'
 exec --no-startup-id i3-msg 'workspace "Torrents"; exec deluge-gtk;'
 exec --no-startup-id i3-msg 'workspace "Mail"; exec icedove;'
 exec --no-startup-id i3-msg 'workspace "Q chats"; exec qtox;'
-exec --no-startup-id i3-msg 'workspace "Info"; exec conky -c ~/.i3/infoscreen/conky.conf;'
+exec --no-startup-id i3-msg 'workspace "Info";' #exec conky -c ~/.i3/infoscreen/conky.conf;'
 #default
 exec --no-startup-id i3-msg 'workspace "A firefox";'
 exec --no-startup-id i3-msg 'workspace "S fm";'
@@ -211,6 +211,7 @@ font pango: Ubuntu Mono 12
 for_window [class="Shutter"] floating enable
 for_window [class="Gcolor2"] floating enable
 for_window [class="Shotwell"] floating enable
+for_window [class="Seafile"] floating enable
 for_window [class="Xfce4-notifyd"] floating enable; border none; focus mode_toggle
 
 exec xsetroot -solid "#0F0F0F"
@@ -221,5 +222,7 @@ exec xsetroot -solid "#0F0F0F"
 #exec yandex-disk start
 #exec yandex-disk-indicator
 exec nm-applet
+#exec seafile-applet
+exec dropbox start
 
 exec --no-startup-id "sh -c 'sleep 1; exec workspace \"1 fm\"'"
