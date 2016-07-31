@@ -72,6 +72,7 @@ bindsym $mod+s workspace "S fm"
 bindsym $mod+t workspace "Torrents"
 bindsym $mod+x workspace "X"
 bindsym $mod+z workspace "Z"
+bindsym $mod+p workspace "Pulse"
 #term
 bindsym $mod+Return exec urxvt
 
@@ -111,6 +112,7 @@ bindsym $mod+Shift+t move container to workspace "Torrents"
 bindsym $mod+Shift+w move container to workspace "W chats"
 bindsym $mod+Shift+x move container to workspace "X"
 bindsym $mod+Shift+z move container to workspace "Z"
+bindsym $mod+Shift+p move container to workspace "Pulse"
 bindsym $mod+Shift+r restart
 bindsym $mod+Ctrl+L exec "sh -c 'i3lock -c 111111; sleep 2; systemctl suspend;'"
 
@@ -135,7 +137,8 @@ bindsym $mod+mod1+G exec gimp
 bindsym $mod+mod1+I exec inkscape
 bindsym $mod+mod1+L exec i3lock -c 111111
 bindsym $mod+mod1+Q exec kill
-bindsym $mod+mod1+S exec pantheon-photos
+bindsym $mod+mod1+S exec shotwell
+bindsym $mod+mod1+P exec pavucontrol
 bindsym $mod+mod1+T exec goldendict
 bindsym $mod+mod1+W exec libreoffice
 bindsym $mod+mod1+X exec urxvt
@@ -162,6 +165,7 @@ exec --no-startup-id i3-msg 'workspace "Emacs"; exec emacs;'
 exec --no-startup-id i3-msg 'workspace "Torrents"; exec deluge-gtk;'
 exec --no-startup-id i3-msg 'workspace "Mail"; exec icedove;'
 exec --no-startup-id i3-msg 'workspace "Q chats"; exec qtox;'
+exec --no-startup-id i3-msg 'workspace "Pulse"; exec pavucontrol;'
 exec --no-startup-id i3-msg 'workspace "Info";' #exec conky -c ~/.i3/infoscreen/conky.conf;'
 #default
 exec --no-startup-id i3-msg 'workspace "A firefox";'
@@ -178,7 +182,7 @@ workspace "Torrents" output VGA1
 workspace "Z" output VGA1
 workspace "X" output eDP1
 workspace "C" output HDMI1
-
+workspace "Pulse" output VGA1
 
 
 client.focused          #096BAA #096BAA #00BAA7 #096BAA
