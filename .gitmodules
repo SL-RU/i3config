@@ -1,0 +1,3 @@
+[submodule "i3_c_bar"]
+	path = i3_c_bar
+	url = https://github.com/SL-RU/i3_c_bar
