@@ -30,3 +30,5 @@ tramp
 
 # cask packages
 .cask/
+
+project.el
