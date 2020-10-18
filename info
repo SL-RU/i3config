@@ -9,17 +9,13 @@ WIN+*
 	t - "Torrents"
 	z,x,c - empty
 	---
-	arrows & HJKL - move focus
-	d - dmenu
+	d - menu
 	enter - terminal
 	f - toogle fullscren
-	g - horizontal separation
 	space - toogle between floating and tiling windows
-	v - vertical separation
 
 WIN+SHIFT+*
 	move window to --//--
-	arrows & HJKL - move window
 	space - toggle tiling / floating
 	Q - kill
 	R - restart
@@ -28,26 +24,18 @@ WIN+ALT+*
 	D - fm
 	E - emacs
 	F - firefox
-	G - gimp
-	I - inkscape
 	L - i3lock
-	Q - kill
-	S - shotwell
-	T - golden dict
 	W - writer
 	enter/X - terminal
 
 WIN+CTRL+*
-	A - tabbed
+	A - stacked
 	D - toogle split
-	E - exit i3
-	H - halt
+	E - exit sway
 	Q - kill app
-	R - restart i3
-	S - stacked
-	W - reload config
+	S - tabbed
+	R - reload sway
 
 
-Shift+Print - screenshot selection
-Shift+Ctrl+Print - screenshot fullscreen
-Shift+Alt+Print - screenshot menu
+Shift+Print - screenshot selection and put it in the clipboard
+Print - screenshot selection and save it to the disk

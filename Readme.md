@@ -1,3 +1,3 @@
-This is my i3wm config.
+This is my sway config.
 
 Shortcuts are described in ./info file
