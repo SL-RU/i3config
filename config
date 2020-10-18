@@ -204,7 +204,7 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command ~/tmp/lyratray/target/release/lyratray #~/.config/sway/bar
+    status_command ~/.config/sway/i3_rust_bar/target/release/lyratray
     tray_output eDP-1
 
     colors {
