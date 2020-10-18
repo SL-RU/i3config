@@ -1,0 +1,3 @@
+[submodule "i3_rust_bar"]
+	path = i3_rust_bar
+	url = https://github.com/SL-RU/i3_rust_bar
