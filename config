@@ -240,11 +240,10 @@ workspace "Pulse" output eDP-1
 
 #
 # Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
-bar {
-    swaybar_command waybar
-}
+# bar {
+#     swaybar_command waybar -c ~/.config/sway/waybar/config -s ~/.config/sway/waybar/style.css
+# }
+exec_always 'pkill waybar; waybar -c ~/.config/sway/waybar/config -s ~/.config/sway/waybar/style.css'
 
 client.focused          #096BAA #096BAA #00BAA7 #096BAA
 client.focused_inactive #484E50 #484E50 #ffffff #5F676A
