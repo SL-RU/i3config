@@ -60,10 +60,13 @@ exec_always swayidle -w \
 
 xwayland enable
 
-# xwayland version
-for_window [class="Firefox"] inhibit_idle fullscreen
 # wayland vesion
 for_window [app_id="firefox"] inhibit_idle fullscreen
+for_window [app_id="firefox"] border pixel
+for_window [app_id="kitty"] border pixel
+for_window [class="Emacs"] border none
+for_window [app_id="emacs"] border none
+for_window [app_id="telegram"] border none
 
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
@@ -270,8 +273,8 @@ exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob -c $HOME/.config/sway/w
 bindsym  --to-code XF86AudioMute            exec pamixer --toggle-mute && ( pamixer --get-mute && echo 0 > $SWAYSOCK.wob ) || pamixer --get-volume > $SWAYSOCK.wob
 bindsym  --to-code XF86AudioRaiseVolume     exec pamixer -i 5 --get-volume > $SWAYSOCK.wob
 bindsym  --to-code XF86AudioLowerVolume     exec pamixer -d 5 --get-volume > $SWAYSOCK.wob
-bindsym  --to-code XF86MonBrightnessDown    exec ~/tmp/packages/light/src/light -e -U 5 && ~/tmp/light/src/light -e -G | cut -d'.' -f1 > $SWAYSOCK.wob
-bindsym  --to-code XF86MonBrightnessUp      exec ~/tmp/packages/light/src/light -e -A 5 && ~/tmp/light/src/light -e -G | cut -d'.' -f1 > $SWAYSOCK.wob
+bindsym  --to-code XF86MonBrightnessDown    exec brightnessctl s 5-% && expr `brightnessctl g` \* 100 / `brightnessctl m` > $SWAYSOCK.wob
+bindsym  --to-code XF86MonBrightnessUp      exec brightnessctl s +5% && expr `brightnessctl g` \* 100 / `brightnessctl m` > $SWAYSOCK.wob
 bindsym  --to-code Shift+Print              exec grim -g "$(slurp)" -t png - | wl-copy
 bindsym  --to-code       Print              exec grim -g "$(slurp)" -t png ~/tmp/screenshots/$(date +'%s_grim.png')
 
