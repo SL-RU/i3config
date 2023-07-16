@@ -213,3 +213,13 @@ label:focus {
     margin: 0 5px;
     min-width: 16px;
 }
+
+#custom-vpn {
+    color: red;
+}
+
+#custom-startvpn {
+    background-color: #2d3436;
+    padding: 0 5px;
+    margin: 0 5px;
+}

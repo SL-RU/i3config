@@ -1,31 +1,13 @@
 {
-    // "layer": "top", // Waybar at top layer
-    // "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 25, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
-    "spacing": 0, // Gaps between modules (4px)
-    // Choose the order of the modules
-    "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
+    "height": 25,
+    "spacing": 0,
+    "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": [],
-    "modules-right": ["idle_inhibitor", "pulseaudio", "temperature", "cpu", "memory", "network", "sway/language", "battery", "battery#bat2", "clock", "tray"],
-    // Modules configuration
+    "modules-right": ["custom/startvpn", "idle_inhibitor", "pulseaudio", "temperature", "cpu", "memory", "network", "custom/vpn", "sway/language", "battery", "battery#bat2", "clock", "tray"],
     "sway/workspaces": {
         "smooth-scrolling-threshold": 2,
         "all-outputs": false,
     },
-    //     "disable-scroll": true,
-    //     "format": "{name}: {icon}",
-    //     "format-icons": {
-    //         "1": "",
-    //         "2": "",
-    //         "3": "",
-    //         "4": "",
-    //         "5": "",
-    //         "urgent": "",
-    //         "focused": "",
-    //         "default": ""
-    //     }
-    // },
     "keyboard-state": {
         "numlock": true,
         "capslock": true,
@@ -113,6 +95,15 @@
         // "format-full": "",
         "format-icons": ["", "", "", "", ""]
     },
+    "custom/vpn": {
+        "format": "{}",
+        "exec": "bash ~/.config/sway/waybar/vpn_status.sh",
+        "interval": 1,
+        "format-icons": {
+            "headphone": "on",
+            "hands-free": "off",
+        },
+    },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": "{essid} ({signalStrength}%) ",
@@ -141,17 +132,9 @@
         },
         "on-click": "pavucontrol"
     },
-    "custom/media": {
-        "format": "{icon} {}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
-        },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
-    }
+    "custom/startvpn": {
+        "format": "VPN",
+        "on-click": "~/VPN/ozon-vpn.exp",
+    },
 }
 
