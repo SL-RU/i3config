@@ -16,8 +16,11 @@ set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu rofi -show run -font "Hack 16" -fg "#505050" -bg "#000000" -hlfg "#ffb964" -hlbg "#000000" -o 85
+set $menu tofi-run --config ~/.config/sway/tofi.cfg
+set $dmenu tofi-drun --config ~/.config/sway/tofi.cfg --drun-launch=true
+# rofi -show run -font "Hack 16" -fg "#505050" -bg "#000000" -hlfg "#ffb964" -hlbg "#000000" -o 85
 #set $menu wofi --show run
+set $lock swaylock -p -i ~/.config/sway/bg/pattern-ophelia-wallpaper-rd.png -s center
 
 # notification daemon
 exec mako --default-timeout 2500
@@ -55,9 +58,9 @@ output DP-7 position 3840,0
 # Example configuration:
 #
 exec_always swayidle -w \
-          timeout 300 'swaylock -p -i ~/.config/sway/bg/pattern-ophelia-wallpaper-wh.png -s center' \
-          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-          before-sleep 'bash -c "swaylock -p -i ~/.config/sway/bg/pattern-ophelia-wallpaper-wh.png -s center"'
+          timeout 300 'bash -c "$lock"' \
+          timeout 600 'bash -c "$lock"' \
+          before-sleep 'bash -c "$lock"'
 
 xwayland enable
 
@@ -69,11 +72,6 @@ for_window [class="Emacs"] border none
 for_window [app_id="emacs"] border none
 for_window [app_id="telegram"] border none
 for_window [class="steam_app_250900"] inhibit_idle
-
-#
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
 
 ### Input configuration
 input "2522:30110:COMPANY__USB_Device" {
@@ -107,7 +105,8 @@ input "2522:30110:COMPANY__USB_Device" {
     bindsym  --to-code $mod+Shift+q kill
 
     # Start your launcher
-    bindsym  --to-code $mod+d exec $menu
+    bindsym  --to-code $mod+d exec $dmenu
+    bindsym  --to-code $mod+Shift+d exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -257,7 +256,7 @@ client.urgent           #900000 #900000 #ffffff #900000
 
 
 bindsym  --to-code $mod+Ctrl+L exec systemctl suspend
-bindsym  --to-code $mod+Shift+L exec swaylock -p -i ~/.config/sway/bg/pattern-ophelia-wallpaper-rd.png -s center
+bindsym  --to-code $mod+Shift+L exec $lock
 
 #Bind applications to keys
 bindsym  --to-code $mod+mod1+D exec pcmanfm
