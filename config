@@ -20,16 +20,19 @@ set $menu tofi-run --config ~/.config/sway/tofi.cfg
 set $dmenu tofi-drun --config ~/.config/sway/tofi.cfg --drun-launch=true
 # rofi -show run -font "Hack 16" -fg "#505050" -bg "#000000" -hlfg "#ffb964" -hlbg "#000000" -o 85
 #set $menu wofi --show run
-set $lock swaylock -p -i ~/.config/sway/bg/pattern-ophelia-wallpaper-rd.png -s center
+set $lock swaylock -f -p -i ~/.config/sway/bg/pattern-ophelia-wallpaper-rd.png -s center
 
 # notification daemon
 exec mako --default-timeout 2500
 
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 # GTK+ applications take 20 seconds to start
-exec_always systemctl --user start xdg-desktop-portal-gtk.service
-exec_always systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
-exec_always hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+# sway does not set DISPLAY/WAYLAND_DISPLAY in the systemd user environment
+# See FS#63021
+# Adapted from xorg's 50-systemd-user.sh, which achieves a similar goal.
+include /etc/sway/config.d/*
+exec systemctl --user start wireplumber
+exec /usr/lib/xdg-desktop-portal-wlr -r
 
 ### Output configuration
 #
@@ -52,15 +55,19 @@ output DP-3 position 3840,0 scale 1.5
 output DP-4 position 3840,0
 output DP-5 position 3840,0
 output DP-7 position 3840,0
+set $laptop eDP-1
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
 
 ### Idle configuration
 #
 # Example configuration:
 #
-exec_always swayidle -w \
-          timeout 300 'bash -c "$lock"' \
-          timeout 600 'bash -c "$lock"' \
-          before-sleep 'bash -c "$lock"'
+exec swayidle -w \
+     timeout 300 'bash -c "$lock"' \
+     timeout 600 'swaymsg "output * power off"' \
+     resume 'swaymsg "output * power on"' \
+     before-sleep 'bash -c "$lock"'
 
 xwayland enable
 
@@ -68,10 +75,12 @@ xwayland enable
 for_window [app_id="firefox"] inhibit_idle fullscreen
 for_window [app_id="firefox"] border pixel
 for_window [app_id="kitty"] border pixel
-for_window [class="Emacs"] border none
+for_window [app_id="kitty"] opacity 0.95
+for_window [class="Emacs"] border pixel
 for_window [app_id="emacs"] border none
-for_window [app_id="telegram"] border none
-for_window [class="steam_app_250900"] inhibit_idle
+for_window [app_id="telegram"] border pixel
+for_window [class="steam_app_250900"] inhibit_idle inhibit_idle
+for_window [app_id="zenity"] floating enable
 
 ### Input configuration
 input "2522:30110:COMPANY__USB_Device" {
@@ -249,18 +258,22 @@ workspace "Pulse" output eDP-1
 # }
 exec_always 'pkill waybar; waybar -c ~/.config/sway/waybar/config.json -s ~/.config/sway/waybar/style.css'
 
-client.focused          #096BAA #096BAA #00BAA7 #096BAA
-client.focused_inactive #484E50 #484E50 #ffffff #5F676A
-client.unfocused        #333333 #333333 #888888 #424242
-client.urgent           #900000 #900000 #ffffff #900000
+# class                 border  bground text    indicator child_border
+client.focused          #A28479B3 #A28479B3 #FFFFFF #957679   #AD9486
+client.focused_inactive #141913B3 #141913B3 #FFFFFF #484E50   #5F676A
+client.unfocused        #141913B3 #141913B3 #FFFFFF #292D2E   #222222
+client.urgent           #820624B3 #820624B3 #FFFFFF #820624   #820624
+client.placeholder      #141913B3 #141913B3 #FFFFFF #141913   #141913
 
+client.background       #141913B3
 
 bindsym  --to-code $mod+Ctrl+L exec systemctl suspend
 bindsym  --to-code $mod+Shift+L exec $lock
 
 #Bind applications to keys
 bindsym  --to-code $mod+mod1+D exec pcmanfm
-bindsym  --to-code $mod+mod1+E exec emacs
+#bindsym  --to-code $mod+mod1+E exec emacs
+bindsym  --to-code $mod+mod1+E exec kitty  -c ~/.config/kitty/kitty.conf -c ~/.config/kitty/emacs.conf emacs -nw
 bindsym  --to-code $mod+mod1+F exec firefox
 bindsym  --to-code $mod+mod1+Q exec kill
 bindsym  --to-code $mod+mod1+P workspace "Pulse"; exec  pavucontrol
@@ -274,12 +287,13 @@ exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob -c $HOME/.config/sway/w
 bindsym  --to-code XF86AudioMute            exec pamixer --toggle-mute && ( pamixer --get-mute && echo 0 > $SWAYSOCK.wob ) || pamixer --get-volume > $SWAYSOCK.wob
 bindsym  --to-code XF86AudioRaiseVolume     exec pamixer -i 5 --get-volume > $SWAYSOCK.wob
 bindsym  --to-code XF86AudioLowerVolume     exec pamixer -d 5 --get-volume > $SWAYSOCK.wob
-bindsym  --to-code XF86MonBrightnessDown    exec brightnessctl s 5-% && expr `brightnessctl g` \* 100 / `brightnessctl m` > $SWAYSOCK.wob
-bindsym  --to-code XF86MonBrightnessUp      exec brightnessctl s +5% && expr `brightnessctl g` \* 100 / `brightnessctl m` > $SWAYSOCK.wob
-bindsym  --to-code Shift+Print              exec grim -g "$(slurp)" -t png - | wl-copy
-bindsym  --to-code       Print              exec grim -g "$(slurp)" -t png ~/tmp/screenshots/$(date +'%s_grim.png')
-bindsym  --to-code $mod+Shift+Home          exec grim -g "$(slurp)" -t png - | wl-copy
-bindsym  --to-code $mod+Home                exec grim -g "$(slurp)" -t png ~/tmp/screenshots/$(date +'%s_grim.png')
+bindsym  --to-code XF86MonBrightnessDown    exec brightnessctl s 5-% && expr `brightnessctl g` \* 100 / `brightnessctl m` > $SWAYSOCK.wob && ddcutil setvcp 10 `expr \`brightnessctl g\` \* 100 / \`brightnessctl m\``
+bindsym  --to-code XF86MonBrightnessUp      exec brightnessctl s +5% && expr `brightnessctl g` \* 100 / `brightnessctl m` > $SWAYSOCK.wob && ddcutil setvcp 10 `expr \`brightnessctl g\` \* 100 / \`brightnessctl m\``
+bindsym  --to-code Shift+Print              exec flameshot gui -p ~/tmp/screenshots/
+bindsym  --to-code $mod+Shift+Home          exec flameshot gui -p ~/tmp/screenshots/
+bindsym  --to-code Ctrl+Print               exec normcap -l rus eng
+bindsym  --to-code $mod+Ctrl+Home           exec normcap -l rus eng
+
 
 exec --no-startup-id swaymsg 'workspace "S fm"; exec pcmanfm;'
 
