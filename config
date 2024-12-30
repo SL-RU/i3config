@@ -48,16 +48,17 @@ output "*" bg ~/.config/sway/bg/pattern-ophelia-wallpaper-rd.png center
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
-output eDP-1 position 0,0
+output eDP-1 position 3840,0 scale 1.5
 #output HDMI-A-2 position 1920,0
 #output eDP-1 position 0,0
-output DP-3 position 3840,0 scale 1.5
-output DP-4 position 3840,0
-output DP-5 position 3840,0
-output DP-7 position 3840,0
+output DP-1 position 1280,0 scale 1.5
+output DP-2 position 0,0 scale 1
 set $laptop eDP-1
-bindswitch --reload --locked lid:on output $laptop disable
-bindswitch --reload --locked lid:off output $laptop enable
+#bindswitch --reload --locked lid:on output $laptop disable
+#bindswitch --reload --locked lid:off output $laptop enable
+
+# https://wiki.archlinux.org/title/Variable_refresh_rate
+output * adaptive_sync on
 
 ### Idle configuration
 #
@@ -75,7 +76,8 @@ xwayland enable
 for_window [app_id="firefox"] inhibit_idle fullscreen
 for_window [app_id="firefox"] border pixel
 for_window [app_id="kitty"] border pixel
-for_window [app_id="kitty"] opacity 0.95
+for_window [app_id="ghostty"] border pixel
+#for_window [app_id="kitty"] opacity 0.95
 for_window [class="Emacs"] border pixel
 for_window [app_id="emacs"] border none
 for_window [app_id="telegram"] border pixel
@@ -257,6 +259,7 @@ workspace "Pulse" output eDP-1
 #     swaybar_command waybar -c ~/.config/sway/waybar/config -s ~/.config/sway/waybar/style.css
 # }
 exec_always 'pkill waybar; waybar -c ~/.config/sway/waybar/config.json -s ~/.config/sway/waybar/style.css'
+exec_always 'pkill batterysaving.s; ~/.config/sway/batterysaving.sh'
 
 # class                 border  bground text    indicator child_border
 client.focused          #A28479B3 #A28479B3 #FFFFFF #957679   #AD9486
@@ -272,8 +275,7 @@ bindsym  --to-code $mod+Shift+L exec $lock
 
 #Bind applications to keys
 bindsym  --to-code $mod+mod1+D exec pcmanfm
-#bindsym  --to-code $mod+mod1+E exec emacs
-bindsym  --to-code $mod+mod1+E exec kitty  -c ~/.config/kitty/kitty.conf -c ~/.config/kitty/emacs.conf emacs -nw
+bindsym  --to-code $mod+mod1+E exec ghostty --config-file=.config/ghostty/emacs -e emacs -nw
 bindsym  --to-code $mod+mod1+F exec firefox
 bindsym  --to-code $mod+mod1+Q exec kill
 bindsym  --to-code $mod+mod1+P workspace "Pulse"; exec  pavucontrol
@@ -289,13 +291,18 @@ bindsym  --to-code XF86AudioRaiseVolume     exec pamixer -i 5 --get-volume > $SW
 bindsym  --to-code XF86AudioLowerVolume     exec pamixer -d 5 --get-volume > $SWAYSOCK.wob
 bindsym  --to-code XF86MonBrightnessDown    exec brightnessctl s 5-% && expr `brightnessctl g` \* 100 / `brightnessctl m` > $SWAYSOCK.wob && ddcutil setvcp 10 `expr \`brightnessctl g\` \* 100 / \`brightnessctl m\``
 bindsym  --to-code XF86MonBrightnessUp      exec brightnessctl s +5% && expr `brightnessctl g` \* 100 / `brightnessctl m` > $SWAYSOCK.wob && ddcutil setvcp 10 `expr \`brightnessctl g\` \* 100 / \`brightnessctl m\``
-bindsym  --to-code Shift+Print              exec flameshot gui -p ~/tmp/screenshots/
-bindsym  --to-code $mod+Shift+Home          exec flameshot gui -p ~/tmp/screenshots/
+bindsym  --to-code Shift+Print              exec grim -g "$(slurp)" -t png - | wl-copy
+bindsym  --to-code       Print              exec grim -g "$(slurp)" -t png ~/tmp/screenshots/$(date +'%s_grim.png')
+bindsym  --to-code $mod+Shift+Home          exec grim -g "$(slurp)" -t png - | wl-copy
+bindsym  --to-code $mod+Home                exec grim -g "$(slurp)" -t png ~/tmp/screenshots/$(date +'%s_grim.png')
 bindsym  --to-code Ctrl+Print               exec normcap -l rus eng
 bindsym  --to-code $mod+Ctrl+Home           exec normcap -l rus eng
 
 
-exec --no-startup-id swaymsg 'workspace "S fm"; exec pcmanfm;'
+exec --no-startup-id swaymsg 'workspace "W chats"; exec QT_QPA_PLATFORM=xcb telegram-desktop;'
+exec --no-startup-id swaymsg 'workspace "Emacs"; exec ghostty --config-file=.config/ghostty/emacs -e emacs -nw;'
+exec --no-startup-id swaymsg 'workspace "A firefox"; exec firefox;'
+exec --no-startup-id swaymsg 'workspace "S fm"; exec pcmanfm; exec ghostty -e yazi;'
 
 exec nm-applet --indicator
 exec xsettingsd

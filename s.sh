@@ -1,3 +1,6 @@
+export WLR_RENDERER=vulkan
+export LIBVA_DRIVER_NAME=radeonsi
+export VDPAU_DRIVER=radeonsi
 #disp_n=`hwinfo --monitor --short | grep "" --count`
 #if [[ $disp_n -eq 2 ]]; then
     # export GDK_DPI_SCALE=1.2
