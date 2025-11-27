@@ -20,7 +20,7 @@ set $menu tofi-run --config ~/.config/sway/tofi.cfg
 set $dmenu tofi-drun --config ~/.config/sway/tofi.cfg --drun-launch=true
 # rofi -show run -font "Hack 16" -fg "#505050" -bg "#000000" -hlfg "#ffb964" -hlbg "#000000" -o 85
 #set $menu wofi --show run
-set $lock swaylock -f -p -i ~/.config/sway/bg/pattern-ophelia-wallpaper-rd.png -s center
+set $lock swaylock -f -i ~/.config/sway/bg/pattern-ophelia-wallpaper-rd.png -s center
 
 # notification daemon
 exec mako --default-timeout 2500
@@ -80,6 +80,7 @@ for_window [app_id="ghostty"] border pixel
 #for_window [app_id="kitty"] opacity 0.95
 for_window [class="Emacs"] border pixel
 for_window [app_id="emacs"] border none
+for_window [class="TelegramDesktop"] border none
 for_window [app_id="telegram"] border pixel
 for_window [class="steam_app_250900"] inhibit_idle inhibit_idle
 for_window [app_id="zenity"] floating enable
@@ -259,7 +260,7 @@ workspace "Pulse" output eDP-1
 #     swaybar_command waybar -c ~/.config/sway/waybar/config -s ~/.config/sway/waybar/style.css
 # }
 exec_always 'pkill waybar; waybar -c ~/.config/sway/waybar/config.json -s ~/.config/sway/waybar/style.css'
-exec_always 'pkill batterysaving.s; ~/.config/sway/batterysaving.sh'
+exec_always 'pkill batterysaving.sh; ~/.config/sway/batterysaving.sh'
 
 # class                 border  bground text    indicator child_border
 client.focused          #A28479B3 #A28479B3 #FFFFFF #957679   #AD9486
@@ -295,8 +296,8 @@ bindsym  --to-code Shift+Print              exec grim -g "$(slurp)" -t png - | w
 bindsym  --to-code       Print              exec grim -g "$(slurp)" -t png ~/tmp/screenshots/$(date +'%s_grim.png')
 bindsym  --to-code $mod+Shift+Home          exec grim -g "$(slurp)" -t png - | wl-copy
 bindsym  --to-code $mod+Home                exec grim -g "$(slurp)" -t png ~/tmp/screenshots/$(date +'%s_grim.png')
-bindsym  --to-code Ctrl+Print               exec normcap -l rus eng
-bindsym  --to-code $mod+Ctrl+Home           exec normcap -l rus eng
+bindsym  --to-code Ctrl+Print               exec flatpak run com.github.dynobo.normcap -l rus eng
+bindsym  --to-code $mod+Ctrl+Home           exec flatpak run com.github.dynobo.normcap -l rus eng
 
 
 exec --no-startup-id swaymsg 'workspace "W chats"; exec QT_QPA_PLATFORM=xcb telegram-desktop;'
